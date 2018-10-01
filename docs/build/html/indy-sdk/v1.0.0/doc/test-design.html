@@ -1,0 +1,274 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Indy SDK test approach &#8212; indy-docs 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">indy-docs 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="indy-sdk-test-approach">
+<span id="indy-sdk-test-approach"></span><h1>Indy SDK test approach<a class="headerlink" href="#indy-sdk-test-approach" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="components">
+<span id="components"></span><h2>Components<a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h2>
+<p>Indy SDK contains the following parts:</p>
+<ul class="simple">
+<li>libindy - native library that provides high-level API for development of Sovrin-based applications.
+It provides methods for handling communication with Indy pool, secure wallet, agents communication,
+sign/verify, encrypt/decrypt, and anoncreds protocol</li>
+<li>Python Wrapper - FFI based wrapper for native libindy that allows application development with python language</li>
+<li>Java Wrapper - FFI based wrapper for native libindy that allows application development on Java platform</li>
+<li>iOS Wrapper - Objective-C based wrapper for native libindy that allows application development on Java platform</li>
+<li>.Net Wrapper - FFI based wrapper for native libindy that allows application development on .Net platform</li>
+</ul>
+</div>
+<div class="section" id="acceptance-testing">
+<span id="acceptance-testing"></span><h2>Acceptance testing<a class="headerlink" href="#acceptance-testing" title="Permalink to this headline">¶</a></h2>
+<p>The Acceptance test procedure consists of the following parts:</p>
+<ul class="simple">
+<li>Functional testing</li>
+<li>Installability testing</li>
+<li>Interoperability testing</li>
+<li>Documentation testing</li>
+</ul>
+</div>
+<div class="section" id="functional-testing">
+<span id="functional-testing"></span><h2>Functional testing<a class="headerlink" href="#functional-testing" title="Permalink to this headline">¶</a></h2>
+<p>Functional part of test procedure contains the set of automated system/integration tests that CI/CD execute for each
+merge commit to master or rc branch. Release artifacts will be created from the same libindy binaries that were
+used for tests execution. Creation of rc package assumes that automated functional tests are passed.
+See <a class="reference external" href="cd-pipeline.puml">cd-pipeline.puml</a> for details.</p>
+<p>Note that libindy and wrappers also provide the set of unit tests, but they are mostly used to follow TDD
+approach and don’t follow formal test design.</p>
+<p>In the future we expect extending functional test procedure with some manual steps for complex cases that
+will be performed after rc package is created. Mostly it is relevant for Low cases.</p>
+<div class="section" id="functional-specification">
+<span id="functional-specification"></span><h3>Functional specification<a class="headerlink" href="#functional-specification" title="Permalink to this headline">¶</a></h3>
+<p>Specification to API calls for now are present as comments in interface parts of source code. See:</p>
+<ul class="simple">
+<li>https://github.com/hyperledger/indy-sdk/tree/master/libindy/include/ (libindy docs)</li>
+<li>https://github.com/hyperledger/indy-sdk/tree/master/wrappers/python/indy/ (python wrapper docs)</li>
+<li>https://github.com/hyperledger/indy-sdk/tree/master/wrappers/java/src/main/java/org/hyperledger/indy/sdk/
+(java wrapper docs)</li>
+<li>https://github.com/hyperledger/indy-sdk/blob/master/wrappers/dotnet/indy-sdk-dotnet/Wrapper/ (.Net wrapper docs)</li>
+</ul>
+</div>
+<div class="section" id="test-groups">
+<span id="test-groups"></span><h3>Test groups<a class="headerlink" href="#test-groups" title="Permalink to this headline">¶</a></h3>
+<p>We define the following test groups by priority:</p>
+<ul class="simple">
+<li>High cases</li>
+<li>Medium cases</li>
+<li>Low cases</li>
+</ul>
+</div>
+<div class="section" id="high-cases">
+<span id="high-cases"></span><h3>High cases<a class="headerlink" href="#high-cases" title="Permalink to this headline">¶</a></h3>
+<p>Successful completion of High cases tests indicates Alpha quality.</p>
+<ul class="simple">
+<li>Normal cases. Note that there can be multiple execution branches. We need to cover at each branch.
+Branches examples:<ul>
+<li>Entity cached in the wallet</li>
+<li>Entity should be taken from the ledger</li>
+</ul>
+</li>
+<li>Error cases that require an explicit recovering procedure. Examples:<ul>
+<li>Invalid wallet credentials</li>
+<li>No entity found in the wallet</li>
+<li>No entity found in the ledger</li>
+<li>Transaction doesn’t allow for current identity</li>
+<li>Unknown crypto</li>
+<li>Claim doesn’t correspond to scheme, proof request doesn’t correspond to claim and etc…</li>
+<li>Revocation registry is full and etc…</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="medium-cases">
+<span id="medium-cases"></span><h3>Medium cases<a class="headerlink" href="#medium-cases" title="Permalink to this headline">¶</a></h3>
+<p>Successful completion of High and Medium cases tests indicates Beta quality.</p>
+<ul class="simple">
+<li>Precondition checking:<ul>
+<li>Invalid handle</li>
+<li>Wallet doesn’t correspond to pool</li>
+<li>Invalid json format</li>
+<li>Invalid json structure (missed fields and etc…)</li>
+<li>Invalid base58</li>
+<li>Invalid crypto keys lenght and format</li>
+<li>Invalid crypto primitives (bigints, points)</li>
+<li>Invalid complex crypto structures (anoncreds structures mostly)</li>
+<li>Invalid responses from 3d parties (Ledger, Agent)</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="low-cases">
+<span id="low-cases"></span><h3>Low cases<a class="headerlink" href="#low-cases" title="Permalink to this headline">¶</a></h3>
+<p>Successful completion of High, Medium and Low cases tests indicates Production quality.</p>
+<ul class="simple">
+<li>Cases that hard to test: Io errors, timeouts and etc…</li>
+</ul>
+</div>
+<div class="section" id="tests-specification">
+<span id="tests-specification"></span><h3>Tests specification<a class="headerlink" href="#tests-specification" title="Permalink to this headline">¶</a></h3>
+<p>Tests specification is provided as the list of test cases for each API call in code grouped by
+API group, API call, test level. Also there are dedicated “demo” tests mostly intended to provide
+usage examples.</p>
+<p>For current moment we implemented High and Medium cases for libindy (except revocation part of Anoncreds). High
+cases for Python, Java, iOs, and .Net wrappers.</p>
+<p>Note that High cases for wrappers contain the same tests as libindy and we keep this tests cases synced.
+Architecture of wrapper allows to claim that High cases coverage can be enough for Beta+ quality.</p>
+<p>Note that test procedure was created by developers (not professional QA) and can require review and
+enhancements.</p>
+<p>See:</p>
+<ul class="simple">
+<li>https://github.com/hyperledger/indy-sdk/tree/master/libindy/tests (libindy tests)</li>
+<li>https://github.com/hyperledger/indy-sdk/tree/master/wrappers/python/tests (python wrapper tests)</li>
+<li>https://github.com/hyperledger/indy-sdk/tree/master/wrappers/java/src/test/java/org/hyperledger/indy/sdk (java wrapper tests)</li>
+<li>https://github.com/hyperledger/indy-sdk/tree/master/wrappers/ios/libindy-pod/libindy-demoTests (iOS wrapper tests)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="installability-testing">
+<span id="installability-testing"></span><h2>Installability testing<a class="headerlink" href="#installability-testing" title="Permalink to this headline">¶</a></h2>
+<p>Functional testing is performed before artifacts packaging. libindy has some runtime dependencies
+and we need to be sure that package installation satisfy these dependencies.</p>
+<p>I suggest the following:</p>
+<ul class="simple">
+<li>Create simple demo projects on C, Python and Java that will depend on libindy artifacts and move our demo tests
+to these projects (in the future we need projects for iOS, .Net and NodeJS). We can try to do this in the current
+sprint.</li>
+<li>Test libindy and wrapper installation on ubuntu and windows (in the future on macos, rhel, iOS too)</li>
+<li>Test that these demo projects can be built and run with rc packages</li>
+</ul>
+<p>For first release these steps can be performed manually and automated in the future.</p>
+</div>
+<div class="section" id="interoperability-testing">
+<span id="interoperability-testing"></span><h2>Interoperability testing<a class="headerlink" href="#interoperability-testing" title="Permalink to this headline">¶</a></h2>
+<p>The following interoperability cases are needed:</p>
+<ul class="simple">
+<li>libindy - Node<ul>
+<li>Interoperability with latest Node version. We test it already with functional tests.</li>
+<li>Backward compatibility of Node will be tested as part of Indy Node acceptance.</li>
+</ul>
+</li>
+<li>libindy - pyindy:<ul>
+<li>Anoncreds protocol interoperability. It is already implemented as part of functional tests.</li>
+</ul>
+</li>
+<li>libindy - libindy<ul>
+<li>Persistent configuration backward compatibility for Major version (Requires test development, IS-312).</li>
+<li>Persistent wallet backward compatibility for Major version (Requires test development, IS-312).</li>
+<li>Persistent pool cache backward compatibility for Major version (Requires test development, IS-312).</li>
+<li>Anoncreds protocol backward compatibility for Major version (Requires test development, IS-312).</li>
+<li>Agent communication backward compatibility for Major version (Requires test development, IS-312).</li>
+</ul>
+</li>
+<li>libindy - wrappers<ul>
+<li>For first releases we plan to release wrappers as same package and claim only exact version interoperability.
+Current functional test procedure performs this interoperability checking with wrappers functional tests.</li>
+</ul>
+</li>
+</ul>
+<p>For first release we can move with existing functional tests, but future release will require creation of
+dedicated interoperability tests. These tests can be automated.</p>
+</div>
+<div class="section" id="documentation-testing">
+<span id="documentation-testing"></span><h2>Documentation testing<a class="headerlink" href="#documentation-testing" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Verify Changelog</li>
+<li>Verify documentation update for all claimed changes</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Indy SDK test approach</a><ul>
+<li><a class="reference internal" href="#components">Components</a></li>
+<li><a class="reference internal" href="#acceptance-testing">Acceptance testing</a></li>
+<li><a class="reference internal" href="#functional-testing">Functional testing</a><ul>
+<li><a class="reference internal" href="#functional-specification">Functional specification</a></li>
+<li><a class="reference internal" href="#test-groups">Test groups</a></li>
+<li><a class="reference internal" href="#high-cases">High cases</a></li>
+<li><a class="reference internal" href="#medium-cases">Medium cases</a></li>
+<li><a class="reference internal" href="#low-cases">Low cases</a></li>
+<li><a class="reference internal" href="#tests-specification">Tests specification</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installability-testing">Installability testing</a></li>
+<li><a class="reference internal" href="#interoperability-testing">Interoperability testing</a></li>
+<li><a class="reference internal" href="#documentation-testing">Documentation testing</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/indy-sdk/v1.0.0/doc/test-design.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">indy-docs 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Michael McKean.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,253 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Payment Interface &#8212; indy-docs 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">indy-docs 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="payment-interface">
+<span id="payment-interface"></span><h1>Payment Interface<a class="headerlink" href="#payment-interface" title="Permalink to this headline">¶</a></h1>
+<p>This design proposes the list of commands to Indy CLI to handle payments.</p>
+<div class="section" id="goals-and-ideas">
+<span id="goals-and-ideas"></span><h2>Goals and ideas<a class="headerlink" href="#goals-and-ideas" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Indy CLI should provide ability to perform the main payments operations:<ul>
+<li>Creation of payment address</li>
+<li>Listing of payment addresses</li>
+<li>Getting list of sources for payment address</li>
+<li>Sending payment transaction</li>
+<li>Adding fees to transactions</li>
+<li>Getting transactions fees amount</li>
+</ul>
+</li>
+<li>Abstraction level should correspond to Indy SDK. For example, don’t hide source abstraction. In the future we can add
+new commands to increase abstractions level.</li>
+</ul>
+</div>
+<div class="section" id="new-cli-commands">
+<span id="new-cli-commands"></span><h2>New CLI commands<a class="headerlink" href="#new-cli-commands" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-payment-address">
+<span id="create-payment-address"></span><h3>Create payment address<a class="headerlink" href="#create-payment-address" title="Permalink to this headline">¶</a></h3>
+<p>Create payment address for specific payment method in the wallet</p>
+<div class="highlight-indy-cli notranslate"><div class="highlight"><pre><span></span>indy&gt; payment-address create payment_method=&lt;payment-method&gt; seed=[&lt;seed&gt;]
+</pre></div>
+</div>
+<p>Returns:</p>
+<ul class="simple">
+<li>Success or error message</li>
+</ul>
+</div>
+<div class="section" id="list-payment-addresses">
+<span id="list-payment-addresses"></span><h3>List payment addresses<a class="headerlink" href="#list-payment-addresses" title="Permalink to this headline">¶</a></h3>
+<p>List payment addresses in the wallet</p>
+<div class="highlight-indy-cli notranslate"><div class="highlight"><pre><span></span>indy&gt; payment-address list
+</pre></div>
+</div>
+<p>Returns:</p>
+<ul class="simple">
+<li>Table with columns: Payment Address, Payment Method</li>
+</ul>
+</div>
+<div class="section" id="send-get-payment-sources-request">
+<span id="send-get-payment-sources-request"></span><h3>Send GET_PAYMENT_SOURCES request<a class="headerlink" href="#send-get-payment-sources-request" title="Permalink to this headline">¶</a></h3>
+<p>Send request to get list of sources for specified payment addresses</p>
+<div class="highlight-indy-cli notranslate"><div class="highlight"><pre><span></span>indy&gt; ledger get-payment-sources payment_address=&lt;payment-address&gt;
+</pre></div>
+</div>
+<p>Returns:</p>
+<ul class="simple">
+<li>Table with columns: Source, Payment Address, Amount, Extra</li>
+</ul>
+</div>
+<div class="section" id="send-payment-transaction">
+<span id="send-payment-transaction"></span><h3>Send PAYMENT transaction<a class="headerlink" href="#send-payment-transaction" title="Permalink to this headline">¶</a></h3>
+<p>Send payment transaction</p>
+<div class="highlight-indy-cli notranslate"><div class="highlight"><pre><span></span>indy&gt; ledger payment inputs=&lt;source-1&gt;,..,&lt;source-n&gt; outputs=(&lt;recipient-0&gt;,&lt;amount&gt;),..,(&lt;recipient-n&gt;,&lt;amount&gt;) [extra=&lt;extra&gt;]
+</pre></div>
+</div>
+<p>Returns:</p>
+<ul class="simple">
+<li>Table with columns: Receipt, Recipient Payment Address, Amount, Extra</li>
+</ul>
+<p>Note that “source-n” is identifier presented in “Source” column of <code class="docutils literal notranslate"><span class="pre">ledger</span> <span class="pre">get-sources</span></code> command output</p>
+</div>
+<div class="section" id="send-get-fees-request">
+<span id="send-get-fees-request"></span><h3>Send GET_FEES request<a class="headerlink" href="#send-get-fees-request" title="Permalink to this headline">¶</a></h3>
+<p>Send request to get fees amount for ledger transactions</p>
+<div class="highlight-indy-cli notranslate"><div class="highlight"><pre><span></span>indy&gt; ledger get-fees payment_method=&lt;payment_method&gt;
+</pre></div>
+</div>
+<p>Returns:</p>
+<ul class="simple">
+<li>Table with columns: Transaction, Amount</li>
+</ul>
+</div>
+<div class="section" id="prepare-mint-transaction">
+<span id="prepare-mint-transaction"></span><h3>Prepare MINT transaction<a class="headerlink" href="#prepare-mint-transaction" title="Permalink to this headline">¶</a></h3>
+<p>Prepare MINT transaction as json.</p>
+<div class="highlight-indy-cli notranslate"><div class="highlight"><pre><span></span>indy&gt; ledger mint-prepare outputs=(&lt;recipient-0&gt;,&lt;amount-0&gt;),..,(&lt;recipient-n&gt;,&lt;amount-n&gt;) [extra=&lt;extra&gt;]
+</pre></div>
+</div>
+<p>Returns:</p>
+<ul class="simple">
+<li>MINT transaction json</li>
+</ul>
+<p>Sending MINT process is the following:</p>
+<ul class="simple">
+<li>Steward 1 calls <code class="docutils literal notranslate"><span class="pre">ledger</span> <span class="pre">mint-prepare</span></code></li>
+<li>Signs it by calling <code class="docutils literal notranslate"><span class="pre">ledger</span> <span class="pre">sign-multi</span></code></li>
+<li>Sends the request json to Steward 2 (now we have 1 signature)</li>
+<li>Second Steward signs it by calling <code class="docutils literal notranslate"><span class="pre">ledger</span> <span class="pre">sign-multi</span></code></li>
+<li>Sends the request json to Steward 3 (now we have 2 signature)</li>
+<li>All Stewards sign the request</li>
+<li>The latest Steward calls <code class="docutils literal notranslate"><span class="pre">ledger</span> <span class="pre">send-custom</span></code> to send request signed by all Stewards</li>
+</ul>
+</div>
+<div class="section" id="prepare-set-fees-transaction">
+<span id="prepare-set-fees-transaction"></span><h3>Prepare SET_FEES transaction<a class="headerlink" href="#prepare-set-fees-transaction" title="Permalink to this headline">¶</a></h3>
+<p>Prepare SET_FEES transaction as json.</p>
+<div class="highlight-indy-cli notranslate"><div class="highlight"><pre><span></span>indy&gt; ledger set-fees-prepare payment_method=&lt;payment_method&gt; fees=&lt;txn-type-1&gt;:&lt;amount-1&gt;,...,&lt;txn-type-n&gt;:&lt;amount-n&gt;
+</pre></div>
+</div>
+<p>Returns:</p>
+<ul class="simple">
+<li>SET_FEES transaction json</li>
+</ul>
+<p>Sending SET_FEES process is the following:</p>
+<ul class="simple">
+<li>Steward 1 calls <code class="docutils literal notranslate"><span class="pre">ledger</span> <span class="pre">set-fees-prepare</span></code></li>
+<li>Signs it by calling <code class="docutils literal notranslate"><span class="pre">ledger</span> <span class="pre">sign-multi</span></code></li>
+<li>Sends the request json to Steward 2 (now we have 1 signature)</li>
+<li>Second Steward signs it by calling <code class="docutils literal notranslate"><span class="pre">ledger</span> <span class="pre">sign-multi</span></code></li>
+<li>Sends the request json to Steward 3 (now we have 2 signature)</li>
+<li>All Stewards sign the request</li>
+<li>The latest Steward calls <code class="docutils literal notranslate"><span class="pre">ledger</span> <span class="pre">send-custom</span></code> to send request signed by all Stewards</li>
+</ul>
+<div class="section" id="send-verify-payment-receipt-request">
+<span id="send-verify-payment-receipt-request"></span><h4>Send VERIFY_PAYMENT_RECEIPT request<a class="headerlink" href="#send-verify-payment-receipt-request" title="Permalink to this headline">¶</a></h4>
+<p>Send request to get information to verify the payment receipt</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ledger</span> <span class="n">verify</span><span class="o">-</span><span class="n">payment</span><span class="o">-</span><span class="n">receipt</span> <span class="o">&lt;</span><span class="n">receipts</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Returns:</p>
+<ul class="simple">
+<li>Receipt info as json</li>
+</ul>
+</div>
+</div>
+<div class="section" id="sign-the-transaction-for-multi-sign-case">
+<span id="sign-the-transaction-for-multi-sign-case"></span><h3>Sign the transaction (for multi-sign case)<a class="headerlink" href="#sign-the-transaction-for-multi-sign-case" title="Permalink to this headline">¶</a></h3>
+<p>Add signature (for multi-sign case) by current DID to transaction json.</p>
+<div class="highlight-indy-cli notranslate"><div class="highlight"><pre><span></span>indy&gt; ledger sign-multi txn=&lt;txn-json&gt;
+</pre></div>
+</div>
+<p>Returns:</p>
+<ul class="simple">
+<li>Transaction json with added signature</li>
+</ul>
+</div>
+</div>
+<div class="section" id="existing-commands-update">
+<span id="existing-commands-update"></span><h2>Existing commands update<a class="headerlink" href="#existing-commands-update" title="Permalink to this headline">¶</a></h2>
+<p>All commands to send domain transactions require new optional params to add transactions fees:</p>
+<div class="highlight-indy-cli notranslate"><div class="highlight"><pre><span></span>[fees_inputs=&lt;source-1&gt;,..,&lt;source-n&gt;] [fees_outputs=(&lt;recipient-0&gt;,&lt;amount&gt;),..,(&lt;recipient-n&gt;,&lt;amount&gt;)] [extra=&lt;extra&gt;]
+</pre></div>
+</div>
+<p>Note that “source-n” is identifier presented in “Source” column of <code class="docutils literal notranslate"><span class="pre">ledger</span> <span class="pre">get-sources</span></code> command output</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Payment Interface</a><ul>
+<li><a class="reference internal" href="#goals-and-ideas">Goals and ideas</a></li>
+<li><a class="reference internal" href="#new-cli-commands">New CLI commands</a><ul>
+<li><a class="reference internal" href="#create-payment-address">Create payment address</a></li>
+<li><a class="reference internal" href="#list-payment-addresses">List payment addresses</a></li>
+<li><a class="reference internal" href="#send-get-payment-sources-request">Send GET_PAYMENT_SOURCES request</a></li>
+<li><a class="reference internal" href="#send-payment-transaction">Send PAYMENT transaction</a></li>
+<li><a class="reference internal" href="#send-get-fees-request">Send GET_FEES request</a></li>
+<li><a class="reference internal" href="#prepare-mint-transaction">Prepare MINT transaction</a></li>
+<li><a class="reference internal" href="#prepare-set-fees-transaction">Prepare SET_FEES transaction</a><ul>
+<li><a class="reference internal" href="#send-verify-payment-receipt-request">Send VERIFY_PAYMENT_RECEIPT request</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sign-the-transaction-for-multi-sign-case">Sign the transaction (for multi-sign case)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#existing-commands-update">Existing commands update</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../../_sources/indy-sdk/v1.6.4/doc/design/007-cli-payments/README.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">indy-docs 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Michael McKean.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

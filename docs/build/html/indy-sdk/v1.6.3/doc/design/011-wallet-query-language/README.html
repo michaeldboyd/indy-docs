@@ -1,0 +1,114 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Wallet Query Language &#8212; indy-docs 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">indy-docs 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="wallet-query-language">
+<span id="wallet-query-language"></span><h1>Wallet Query Language<a class="headerlink" href="#wallet-query-language" title="Permalink to this headline">¶</a></h1>
+<p>This language will be used to define queries in Non-secrets, Anoncreds search APIs.</p>
+<div class="highlight-Rust notranslate"><div class="highlight"><pre><span></span><span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">subquery</span><span class="p">}</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">subquery</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">subquery</span><span class="p">}</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">subquery</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">subquery</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="cp">$or</span>: <span class="p">[{</span><span class="n">subquery</span><span class="p">},...,</span><span class="w"> </span><span class="p">{</span><span class="n">subquery</span><span class="p">}]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">subquery</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">subquery</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="cp">$not</span>: <span class="p">{</span><span class="n">subquery</span><span class="p">}</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Where</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="p">(</span><span class="n">subquery</span><span class="p">)</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tagName&quot;</span>: <span class="nc">tagValue</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">tagName</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">tagValue</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tagName&quot;</span>: <span class="p">{</span><span class="cp">$neq</span>: <span class="nc">tagValue</span><span class="p">}</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">tagName</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">tagValue</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tagName&quot;</span>: <span class="p">{</span><span class="cp">$gt</span>: <span class="nc">tagValue</span><span class="p">}</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">tagName</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">tagValue</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tagName&quot;</span>: <span class="p">{</span><span class="cp">$gte</span>: <span class="nc">tagValue</span><span class="p">}</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">tagName</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">tagValue</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tagName&quot;</span>: <span class="p">{</span><span class="cp">$lt</span>: <span class="nc">tagValue</span><span class="p">}</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">tagName</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">tagValue</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tagName&quot;</span>: <span class="p">{</span><span class="cp">$lte</span>: <span class="nc">tagValue</span><span class="p">}</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">tagName</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">tagValue</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tagName&quot;</span>: <span class="p">{</span><span class="cp">$like</span>: <span class="nc">tagValue</span><span class="p">}</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">tagName</span><span class="w"> </span><span class="n">LIKE</span><span class="w"> </span><span class="n">tagValue</span><span class="w"></span>
+<span class="n">subquery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tagName&quot;</span>: <span class="p">{</span><span class="cp">$in</span>: <span class="p">[</span><span class="n">tagValue</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">tagValue</span><span class="p">]}</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">tagName</span><span class="w"> </span><span class="n">IN</span><span class="w"> </span><span class="p">(</span><span class="n">tagValue</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">tagValue</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="section" id="tag-types">
+<span id="tag-types"></span><h2>Tag types<a class="headerlink" href="#tag-types" title="Permalink to this headline">¶</a></h2>
+<p>There are two types of tags:</p>
+<ul class="simple">
+<li>Un-encrypted - Tag name starts with “~”. That tag will be stored un-encrypted that will allow usage of this tag in complex search queries (comparison, predicates).</li>
+<li>Encrypted - That tag will be stored encrypted. The tag can be searched only for exact matching.</li>
+</ul>
+<p>NOTE: Combinators $or, $and, $not can be used with both tag types.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Wallet Query Language</a><ul>
+<li><a class="reference internal" href="#tag-types">Tag types</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../../_sources/indy-sdk/v1.6.3/doc/design/011-wallet-query-language/README.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">indy-docs 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Michael McKean.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

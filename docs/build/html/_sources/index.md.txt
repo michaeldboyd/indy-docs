@@ -10,7 +10,7 @@ in project IS (note that regular Indy tickets are in the INDY project instead...
 us on [Hyperledger's Rocket.Chat](https://chat.hyperledger.org/) at #indy-sdk to discuss. You will need a Linux Foundation login to get access to these channels
 
 ## A Test of Directory
-Please follow this [link](pr.md).
+Please follow this [link](pr.html).
 
 ## Understanding Hyperledger Indy
 

@@ -1,0 +1,138 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Decentralized Key Management &#8212; indy-docs 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/sidebar.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">indy-docs 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="decentralized-key-management">
+<span id="decentralized-key-management"></span><h1>Decentralized Key Management<a class="headerlink" href="#decentralized-key-management" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="introduction"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>A decentralized key management system (DKMS) is an approach to cryptographic key
+management where there is no central authority. DKMS leverages the security,
+immutability, availability, and resiliency properties of distributed ledgers
+to provide highly scalable key distribution, verification, and recovery.</p>
+</div>
+<div class="section" id="key-types">
+<span id="key-types"></span><h2>Key Types<a class="headerlink" href="#key-types" title="Permalink to this headline">¶</a></h2>
+<p>DKMS uses the following key types:</p>
+<ol class="simple">
+<li><strong>Master keys</strong>: Keys that are not cryptographically protected. They are distributed manually or
+initially installed and protected by procedural controls and physical or electronic isolation.</li>
+<li><strong>Key encrypting keys</strong>: Symmetric or public keys used for key transport or storage of other keys.</li>
+<li><strong>Data keys</strong>: Used to provide cryptographic operations on user data (e.g., encryption, authentication).</li>
+</ol>
+<p>The keys at one level are used to protect items at a lower level. Consequently, special measures
+are used to protect master keys, including severely limiting access and use, hardware protection,
+and providing access to the key only under shared control.</p>
+</div>
+<div class="section" id="key-loss">
+<span id="key-loss"></span><h2>Key Loss<a class="headerlink" href="#key-loss" title="Permalink to this headline">¶</a></h2>
+<p>Key loss means the owner no longer controls the key and it can assume there is no further risk of compromise. For example devices unable to function due to water, electricity, breaking, fire, hardware failure, acts of God, etc.</p>
+</div>
+<div class="section" id="compromise">
+<span id="compromise"></span><h2>Compromise<a class="headerlink" href="#compromise" title="Permalink to this headline">¶</a></h2>
+<p>Key compromise means that private keys and/or master keys have become or can become known either passively or actively.</p>
+</div>
+<div class="section" id="recovery">
+<span id="recovery"></span><h2>Recovery<a class="headerlink" href="#recovery" title="Permalink to this headline">¶</a></h2>
+<p>In decentralized identity management, recovery is important since identity owners have no “higher authority”
+to turn to for recovery.</p>
+<ol class="simple">
+<li>Offline recovery uses physical media or removable digital media to store recovery keys.</li>
+<li>Social recovery employs entities trusted by the identity owner called “trustees” who store recovery data on an identity owners behalf—typically
+in the trustees own agent(s).</li>
+</ol>
+<p>These methods are not exclusive and should be combined with key rotation and revocation for proper security.</p>
+<ol class="simple">
+<li><a class="reference external" href="DKMS%20Design%20and%20Architecture%20V3.md">Design and architecture</a></li>
+<li><strong>Public Registry for Agent Authorization Policy</strong>. An identity owner create a policy on the ledger that defines its agents and their authorizations.
+Agents while acting on the behalf of the identity owner need to prove that they are authorised. <a class="reference external" href="../005-dkms/pdf/Agent%20Authorization%20Policy.pdf">More details</a></li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Decentralized Key Management</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#key-types">Key Types</a></li>
+<li><a class="reference internal" href="#key-loss">Key Loss</a></li>
+<li><a class="reference internal" href="#compromise">Compromise</a></li>
+<li><a class="reference internal" href="#recovery">Recovery</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../../_sources/indy-sdk/v1.6.4/doc/design/005-dkms/README.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">indy-docs 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Michael McKean.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>
