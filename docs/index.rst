@@ -22,7 +22,7 @@ Key Characteristics
     - Zero Knowledge Proofs which prove that some or all of the data in a set of Claims is true without revealing any additional information, including the identity of the Prover
 
 Our Repositories:
-----------------
+-----------------
 * Distributed Ledger:
 
     * `indy-node <https://github.com/hyperledger/indy-node>`_
