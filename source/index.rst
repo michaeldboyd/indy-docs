@@ -7,6 +7,8 @@ Hyperledger Indy
    :caption: Indy
    :hidden:
 
+   docs.md
+
 This is currently just a prototype of our proposed Indy documentation library. Please give your feedback on whether this would be useful on the `Improvement Proposal <https://github.com/hyperledger/indy-hipe/pull/63>`_ we've written.    
 
 Hyperledger Indy provides tools, libraries, and reusable components for providing digital identities rooted on blockchains or other distributed ledgers so that they are interoperable across administrative domains, applications, and any other silo.
