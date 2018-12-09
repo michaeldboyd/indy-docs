@@ -1,5 +1,5 @@
 # Documentation README
-Check out the indy docs at http://indy.readthedocs.io/projects/node
+Check out the indy docs at http://indy.readthedocs.io/projects/docs
 
 Learn more about how our docs are built and maintained at http://indy.readthedocs.io/en/latest/docs.html
 

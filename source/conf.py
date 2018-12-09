@@ -16,6 +16,8 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('..'))
+
 from recommonmark.transform import AutoStructify
 
 # Enable parsing for Markdown files
@@ -204,15 +206,11 @@ if(on_rtd):
     if rtd_version not in ['stable', 'latest']:
         rtd_version = 'latest'
     try:
-        os.system("git clone https://github.com/michaeldboyd/indy-docs-conf.git remote_conf")
-        os.system("mv remote_conf/remote_conf.py .")
         import remote_conf
         remote_conf.generate_sidebar(globals(), nickname)
         intersphinx_mapping = remote_conf.get_intersphinx_mapping(rtd_version)
         master_doc = "toc"
-    
     except:
         e = sys.exc_info()[0]
-        print e
-    finally:      
-        os.system("rm -rf remote_conf/ __pycache__/ remote_conf.py")
+        print e     
+   

@@ -24,8 +24,9 @@ Key Characteristics
     - Verifiable Claims are interoperable format for exchange of digital identity attributes and relationships currently in the standardization pipeline at the W3C
     - Zero Knowledge Proofs which prove that some or all of the data in a set of Claims is true without revealing any additional information, including the identity of the Prover
 
-Our Repositories:
+Our Repositories
 -----------------
+
 * Distributed Ledger:
 
     * `indy-node <https://github.com/hyperledger/indy-node>`_
