@@ -62,7 +62,7 @@ def generate_sidebar(conf, conf_api):
     write_item('Introduction', 'index')
 
     toctree('Repositories', 2)
-    write_subproject('sdk', 'SDK', 'index')
+    write_subproject('sdk', 'SDK', 'docs/index')
     write_subproject('node', 'Node', 'index')
     write_subproject('agent', 'Agent', 'index')
     write_subproject('plenum', 'Plenum', 'index')
