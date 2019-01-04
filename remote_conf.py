@@ -66,7 +66,7 @@ def generate_sidebar(conf, conf_api):
     write_subproject('node', 'Node', 'index')
     write_subproject('agent', 'Agent', 'index')
     write_subproject('plenum', 'Plenum', 'index')
-    write_subproject('hipe', 'Hipe', 'index')
+    write_subproject('hipe', 'Hipe', 'text/index')
 
     endl()
 
